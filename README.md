@@ -23,5 +23,6 @@ This project contains:
 ## Steps to Deploy
 
 ```bash
-helm upgrade --install mern-stack ./helm/mern-stack
+helm upgrade --install mern-stack ./hv-container-orchestration
+/container-orchestration-chart-0.1.0.tgz
 ```
