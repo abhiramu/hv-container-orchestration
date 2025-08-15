@@ -1,0 +1,79 @@
+apps:
+  - name: frontend
+    replicaCount: 3
+    image:
+      repository: abhiramuujjaini/herovired-frontend
+      pullPolicy: IfNotPresent
+      tag: latest
+    imagePullSecrets: []
+    containers:
+      - name: frontend-container
+        ports:
+          - containerPort: 80
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "500m"
+          limits:
+            memory: "512Mi"
+            cpu: "1"
+    nameOverride: ""
+    fullnameOverride: ""
+    service:
+      type: NodePort
+      port: 80
+
+  - name: backend
+    replicaCount: 2
+    image:
+      repository: abhiramuujjaini/herovired-backend
+      pullPolicy: IfNotPresent
+      tag: latest
+    imagePullSecrets: []
+    containers:
+      - name: backend-container
+        ports:
+          - containerPort: 8080
+        env:
+          - name: ATLAS_URI
+            value: "mongodb+srv://aseem:WfPuqaBcHlecu0Ut@cluster0.aorqndq.mongodb.net/blog_mern?retryWrites=true&w=majorityrn"
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "1"
+          limits:
+            memory: "1Gi"
+            cpu: "2"
+    nameOverride: ""
+    fullnameOverride: ""
+    service:
+      type: ClusterIP
+      port: 8080
+  
+  - name: mongo
+    replicaCount: 1
+    image:
+      repository: abhiramuujjaini/mongo
+      pullPolicy: IfNotPresent
+      tag: latest
+    imagePullSecrets: []
+    containers:
+      - name: mongo-container
+        ports:
+          - containerPort: 27017
+        env:
+          - name: MONGO_INITDB_DATABASE
+            value: mern
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "500m"
+          limits:
+            memory: "512Mi"
+            cpu: "1"
+    nameOverride: ""
+    fullnameOverride: ""
+    service:
+      type: ClusterIP
+      port: 27017
+  # The number of replicas for the backend service.
